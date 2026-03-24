@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video Game Console Archive — Complete Collection</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;600;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── PALETTE ───────────────────────────────────────────────────── */
+:root {
+  --bg:           #080c08;
+  --bg2:          #0b100b;
+  --surface:      #0f160f;
+  --surface2:     #141e14;
+  --surface3:     #1a261a;
+  --phosphor:     #39ff14;
+  --phosphor-dim: #1a7a0a;
+  --phosphor-glow:rgba(57,255,20,0.12);
+  --amber:        #ffaa00;
+  --cyan:         #00e5ff;
+  --white:        #d4f5d4;
+  --muted:        #2d4a2d;
+  --muted2:       #4a7a4a;
+  --border:       rgba(57,255,20,0.10);
+  --border2:      rgba(57,255,20,0.25);
+  --radius:       4px;
+  --card-w:       184px;
+  /* brand colours */
+  --nintendo:     #e60012;
+  --sony:         #0070d1;
+  --microsoft:    #107c10;
+  --sega:         #1565c0;
+  --atari:        #e87c1e;
+  --nec:          #9900cc;
+  --snk:          #cc8800;
+  --3do:          #007070;
+  --philips:      #999900;
+  --mattel:       #cc2266;
+  --bandai:       #ff6600;
+  --coleco:       #336699;
+  --outros:       #4a7a4a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+
+body{
+  background:var(--bg);
+  color:var(--white);
+  font-family:'Exo 2',sans-serif;
+  min-height:100vh;
+  padding-bottom:100px;
+  -webkit-font-smoothing:antialiased;
+  position:relative;
+}
+
+/* grid background */
+.grid-bg{
+  position:fixed;inset:0;
+  background-image:
+    linear-gradient(rgba(57,255,20,0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(57,255,20,0.022) 1px, transparent 1px);
+  background-size:44px 44px;
+  pointer-events:none;z-index:0;
+}
+
+/* scan lines */
+body::before{
+  content:'';position:fixed;inset:0;
+  background:repeating-linear-gradient(
+    0deg,transparent,transparent 2px,
+    rgba(0,0,0,0.15) 2px,rgba(0,0,0,0.15) 4px
+  );
+  pointer-events:none;z-index:999;
+  animation:scanroll 10s linear infinite;
+}
+@keyframes scanroll{0%{background-position:0 0}100%{background-position:0 120px}}
+
+/* ── HEADER ────────────────────────────────────────────────────── */
+header{
+  position:relative;z-index:10;
+  text-align:center;padding:48px 24px 44px;
+  border-bottom:1px solid var(--border2);
+  background:linear-gradient(180deg,#030703 0%,#080c08 100%);
+  overflow:hidden;
+}
+header::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 90% 85% at 50% 50%,transparent 40%,rgba(0,0,0,0.65) 100%);
+  pointer-events:none;
+}
+.hglow{
+  position:absolute;top:-80px;left:50%;transform:translateX(-50%);
+  width:800px;height:450px;
+  background:radial-gradient(ellipse,rgba(57,255,20,0.07) 0%,transparent 65%);
+  pointer-events:none;
+}
+.eyebrow{
+  font-family:'Share Tech Mono',monospace;
+  font-size:10px;letter-spacing:8px;text-transform:uppercase;
+  color:var(--phosphor-dim);margin-bottom:14px;
+  position:relative;z-index:1;
+}
+.eyebrow::before{content:'> ';color:var(--phosphor);}
+h1{
+  font-family:'Orbitron',sans-serif;
+  font-size:clamp(2.6rem,8vw,6.5rem);
+  font-weight:900;letter-spacing:6px;line-height:.88;
+  position:relative;z-index:1;
+  color:var(--phosphor);
+  text-shadow:0 0 20px rgba(57,255,20,0.8),0 0 60px rgba(57,255,20,0.35),0 0 100px rgba(57,255,20,0.15);
+  animation:flicker 7s ease-in-out infinite;
+}
+@keyframes flicker{0%,94%,100%{opacity:1}95%{opacity:.82}97%{opacity:1}98%{opacity:.9}}
+h1 span{
+  color:var(--amber);
+  text-shadow:0 0 20px rgba(255,170,0,0.8),0 0 60px rgba(255,170,0,0.3);
+}
+.header-sub{
+  font-family:'Share Tech Mono',monospace;font-size:11px;
+  letter-spacing:4px;color:var(--muted2);margin-top:12px;
+  position:relative;z-index:1;text-transform:uppercase;
+}
+.header-sub strong{color:var(--phosphor);}
+
+/* stats */
+.stats{
+  display:flex;justify-content:center;gap:0;
+  margin:26px auto 0;max-width:560px;
+  position:relative;z-index:1;
+  border:1px solid var(--border2);
+  background:rgba(8,12,8,0.9);
+  clip-path:polygon(16px 0%,100% 0%,calc(100% - 16px) 100%,0% 100%);
+}
+.stat{flex:1;padding:14px 10px;text-align:center;border-right:1px solid var(--border);}
+.stat:last-child{border-right:none}
+.stat-val{
+  font-family:'Orbitron',sans-serif;font-size:1.55rem;
+  font-weight:700;color:var(--phosphor);line-height:1;
+  text-shadow:0 0 14px rgba(57,255,20,0.55);
+}
+.stat-val.amber{color:var(--amber);text-shadow:0 0 14px rgba(255,170,0,0.55);}
+.stat-lbl{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted2);margin-top:4px;}
+
+/* ── CONTROLS ──────────────────────────────────────────────────── */
+.controls{position:relative;z-index:10;max-width:1420px;margin:28px auto 0;padding:0 20px;}
+
+.search-wrap{position:relative;margin-bottom:16px;}
+.s-ico{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--muted2);font-family:'Share Tech Mono',monospace;font-size:16px;pointer-events:none;}
+input[type="text"]{
+  width:100%;background:var(--surface);border:1px solid var(--border2);
+  color:var(--white);font-family:'Share Tech Mono',monospace;font-size:13px;
+  padding:12px 18px 12px 46px;outline:none;
+  transition:border-color .2s,box-shadow .2s;
+  clip-path:polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%);
+}
+input[type="text"]:focus{border-color:var(--phosphor);box-shadow:0 0 0 2px rgba(57,255,20,0.1),0 0 20px rgba(57,255,20,0.07);}
+input[type="text"]::placeholder{color:var(--muted2);}
+
+.fgrp{margin-bottom:12px;}
+.flbl{
+  display:block;font-family:'Share Tech Mono',monospace;
+  font-size:9px;letter-spacing:4px;text-transform:uppercase;
+  color:var(--muted2);margin-bottom:8px;
+}
+.flbl::before{content:'// ';color:var(--phosphor-dim);}
+.frow{display:flex;flex-wrap:wrap;gap:6px;}
+
+.fbtn{
+  background:var(--surface);border:1px solid var(--border);
+  color:var(--muted2);cursor:pointer;
+  font-family:'Share Tech Mono',monospace;font-size:10px;
+  letter-spacing:1px;text-transform:uppercase;padding:5px 12px;
+  transition:all .14s;white-space:nowrap;
+  clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);
+}
+.fbtn:hover{color:var(--white);border-color:var(--phosphor-dim);background:var(--surface2);}
+.fbtn.active{color:#000;border-color:transparent;}
+
+/* toolbar */
+.toolbar{
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;margin-top:10px;
+  padding-top:12px;border-top:1px solid var(--border);
+}
+.owned-pill{
+  font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:1px;
+  color:var(--phosphor);background:rgba(57,255,20,0.07);
+  border:1px solid rgba(57,255,20,0.28);padding:5px 14px;
+  clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);
+}
+.count-pill{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--muted2);}
+.vtog{display:flex;gap:4px;}
+.vbtn{
+  background:var(--surface);border:1px solid var(--border2);
+  color:var(--muted2);cursor:pointer;
+  width:32px;height:32px;display:flex;align-items:center;justify-content:center;
+  font-size:14px;transition:all .14s;
+  clip-path:polygon(4px 0%,100% 0%,calc(100% - 4px) 100%,0% 100%);
+}
+.vbtn.active{background:var(--phosphor);color:#000;border-color:var(--phosphor);}
+
+/* ── SECTION LABEL ─────────────────────────────────────────────── */
+.slabel{
+  position:relative;z-index:10;
+  max-width:1420px;margin:38px auto 14px;padding:0 20px;
+  display:flex;align-items:center;gap:16px;
+}
+.slabel-inner{
+  display:flex;align-items:center;gap:12px;
+  background:var(--surface2);border:1px solid var(--border2);
+  padding:8px 18px;white-space:nowrap;
+  clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);
+}
+.sdot{width:9px;height:9px;border-radius:50%;flex-shrink:0;animation:pulse 2.5s ease-in-out infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 4px currentColor}50%{box-shadow:0 0 14px currentColor,0 0 22px currentColor}}
+.stitle{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;}
+.scnt{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1px;color:var(--muted2);}
+.slabel::before,.slabel::after{content:'';flex:1;height:1px;}
+.slabel::before{background:linear-gradient(90deg,transparent,var(--border2));}
+.slabel::after{background:linear-gradient(90deg,var(--border2),transparent);}
+
+/* ── GRID ──────────────────────────────────────────────────────── */
+.grid{
+  position:relative;z-index:10;
+  max-width:1420px;margin:0 auto;padding:0 20px;
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(var(--card-w),1fr));
+  gap:10px;
+}
+.grid.lv{grid-template-columns:1fr;}
+
+/* ── CARD ──────────────────────────────────────────────────────── */
+.card{
+  background:var(--surface);border:1px solid var(--border);
+  position:relative;overflow:hidden;
+  transition:transform .2s,box-shadow .2s,border-color .2s;
+  animation:rise .3s ease both;cursor:default;
+}
+.card::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  opacity:0;transition:opacity .2s;z-index:3;
+}
+.card:hover{transform:translateY(-4px);}
+.card:hover::after{opacity:1;}
+.card.owned{border-color:rgba(57,255,20,0.4);background:#0d160d;}
+.card.owned::after{background:var(--phosphor);box-shadow:0 0 8px var(--phosphor);opacity:1;}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* card image */
+.cimg{
+  height:158px;background:#050905;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;position:relative;
+}
+.cimg::before{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.11) 3px,rgba(0,0,0,0.11) 4px);
+  pointer-events:none;z-index:2;
+}
+.cimg img{
+  width:100%;height:100%;object-fit:contain;padding:10px;
+  transition:transform .3s;position:relative;z-index:1;
+  filter:drop-shadow(0 4px 12px rgba(0,0,0,0.7));
+}
+.card:hover .cimg img{transform:scale(1.08);}
+
+/* placeholder */
+.ph{display:none;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:16px;width:100%;height:100%;position:relative;z-index:1;}
+.ph-ico{font-size:2rem;opacity:.14;}
+.ph-nm{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;text-align:center;opacity:.3;line-height:1.4;}
+
+/* badges */
+.type-badge{
+  position:absolute;top:8px;left:8px;
+  font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:1.5px;
+  text-transform:uppercase;padding:3px 8px;z-index:3;color:#000;font-weight:700;
+  clip-path:polygon(4px 0%,100% 0%,calc(100% - 4px) 100%,0% 100%);
+}
+.t-home    {background:var(--phosphor);}
+.t-portable{background:var(--amber);}
+.t-hybrid  {background:var(--cyan);}
+.t-addon   {background:#777;}
+
+.year-badge{
+  position:absolute;bottom:8px;left:8px;
+  font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1px;
+  padding:2px 8px;background:rgba(8,12,8,0.88);
+  border:1px solid var(--border2);color:var(--muted2);z-index:3;
+}
+
+/* owned button */
+.obtn{
+  position:absolute;top:8px;right:8px;
+  width:26px;height:26px;border-radius:50%;
+  border:1px solid var(--border2);background:rgba(8,12,8,0.8);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:12px;color:var(--muted2);transition:all .14s;
+  user-select:none;z-index:4;backdrop-filter:blur(4px);
+}
+.obtn:hover{border-color:var(--phosphor);color:var(--phosphor);}
+.obtn.owned{background:var(--phosphor);border-color:var(--phosphor);color:#000;box-shadow:0 0 10px rgba(57,255,20,0.5);}
+
+/* card body */
+.cbody{padding:10px 12px 12px;}
+.cgen{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted2);margin-bottom:3px;text-transform:uppercase;}
+.cname{font-family:'Exo 2',sans-serif;font-size:13px;font-weight:700;color:var(--white);line-height:1.25;margin-bottom:7px;}
+.ctags{display:flex;flex-wrap:wrap;gap:4px;align-items:center;}
+.ctag{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.5px;text-transform:uppercase;padding:2px 7px;border:1px solid;opacity:.75;}
+
+/* ── LIST VIEW ─────────────────────────────────────────────────── */
+.grid.lv .card{display:flex;flex-direction:row;align-items:center;}
+.grid.lv .cimg{width:80px;height:72px;flex-shrink:0;}
+.grid.lv .cimg img{padding:6px;}
+.grid.lv .cbody{flex:1;padding:8px 14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.grid.lv .cname{margin-bottom:0;font-size:13px;}
+.grid.lv .type-badge{top:5px;left:5px;font-size:7px;padding:2px 6px;}
+.grid.lv .year-badge{bottom:4px;left:5px;font-size:9px;padding:1px 6px;}
+.grid.lv .obtn{top:5px;right:5px;}
+
+/* ── EMPTY ─────────────────────────────────────────────────────── */
+.empty{grid-column:1/-1;text-align:center;padding:80px 20px;color:var(--muted2);}
+.empty-ico{font-size:2.5rem;margin-bottom:14px;opacity:.18;}
+.empty p{font-family:'Share Tech Mono',monospace;font-size:14px;letter-spacing:2px;text-transform:uppercase;}
+
+/* ── SCROLLBAR ─────────────────────────────────────────────────── */
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2)}
+::-webkit-scrollbar-thumb:hover{background:var(--phosphor)}
+
+@media(max-width:520px){:root{--card-w:150px}h1{font-size:2.2rem}}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+
+<header>
+  <div class="hglow"></div>
+  <div class="eyebrow">Gaming Hardware Archive · Complete Collection Checklist</div>
+  <h1>CONSOLE<br><span>ARCHIVE</span></h1>
+  <p class="header-sub">All generations · All manufacturers · <strong id="totalCount">…</strong> systems</p>
+  <div class="stats">
+    <div class="stat"><div class="stat-val" id="statOwned">0</div><div class="stat-lbl">Owned</div></div>
+    <div class="stat"><div class="stat-val amber" id="statTotal">0</div><div class="stat-lbl">Total</div></div>
+    <div class="stat"><div class="stat-val" id="statPct">0%</div><div class="stat-lbl">Complete</div></div>
+    <div class="stat"><div class="stat-val amber">13</div><div class="stat-lbl">Brands</div></div>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="search-wrap">
+    <span class="s-ico">⌕</span>
+    <input type="text" id="search" placeholder="Search by name, year, generation, manufacturer…" autocomplete="off" spellcheck="false">
+  </div>
+  <div class="fgrp"><span class="flbl">Manufacturer</span><div class="frow" id="fMarca"></div></div>
+  <div class="fgrp"><span class="flbl">Generation</span><div class="frow" id="fGen"></div></div>
+  <div class="fgrp"><span class="flbl">Type</span><div class="frow" id="fTipo"></div></div>
+  <div class="toolbar">
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+      <div class="owned-pill" id="ownedCount">✓ 0 owned</div>
+      <div class="count-pill" id="countPill">Showing 0 systems</div>
+    </div>
+    <div class="vtog">
+      <button class="vbtn active" id="btnGrid" title="Grid view" onclick="setView('grid')">⊞</button>
+      <button class="vbtn" id="btnList" title="List view" onclick="setView('list')">☰</button>
+    </div>
+  </div>
+</div>
+
+<div id="output"></div>
+
+<script>
+const consolas = [
+  /* ── NINTENDO — HOME ── */
+  {brand:"Nintendo",name:"Color TV-Game 6",          year:1977,gen:"1st Generation", type:"Home",     img:"imgs/consolas/nintendo/color-tv-game-6.jpg"},
+  {brand:"Nintendo",name:"Color TV-Game 15",         year:1977,gen:"1st Generation", type:"Home",     img:"imgs/consolas/nintendo/color-tv-game-15.jpg"},
+  {brand:"Nintendo",name:"Color TV-Game Racing 112", year:1978,gen:"1st Generation", type:"Home",     img:"imgs/consolas/nintendo/color-tv-game-racing.jpg"},
+  {brand:"Nintendo",name:"Color TV-Game Block Breaker",year:1979,gen:"1st Generation",type:"Home",    img:"imgs/consolas/nintendo/color-tv-game-block.jpg"},
+  {brand:"Nintendo",name:"Computer TV-Game",         year:1980,gen:"1st Generation", type:"Home",     img:"imgs/consolas/nintendo/computer-tv-game.jpg"},
+  {brand:"Nintendo",name:"NES / Famicom",            year:1983,gen:"3rd Generation", type:"Home",     img:"imgs/consolas/nintendo/nes.jpg"},
+  {brand:"Nintendo",name:"Famicom Disk System",      year:1986,gen:"3rd Generation", type:"Addon",    img:"imgs/consolas/nintendo/famicom-disk.jpg"},
+  {brand:"Nintendo",name:"Super NES / Super Famicom",year:1990,gen:"4th Generation", type:"Home",     img:"imgs/consolas/nintendo/snes.jpg"},
+  {brand:"Nintendo",name:"Nintendo 64",              year:1996,gen:"5th Generation", type:"Home",     img:"imgs/consolas/nintendo/n64.jpg"},
+  {brand:"Nintendo",name:"Nintendo 64DD",            year:1999,gen:"5th Generation", type:"Addon",    img:"imgs/consolas/nintendo/n64dd.jpg"},
+  {brand:"Nintendo",name:"GameCube",                 year:2001,gen:"6th Generation", type:"Home",     img:"imgs/consolas/nintendo/gamecube.jpg"},
+  {brand:"Nintendo",name:"Wii",                      year:2006,gen:"7th Generation", type:"Home",     img:"imgs/consolas/nintendo/wii.jpg"},
+  {brand:"Nintendo",name:"Wii U",                    year:2012,gen:"8th Generation", type:"Home",     img:"imgs/consolas/nintendo/wiiu.jpg"},
+  {brand:"Nintendo",name:"Nintendo Switch",          year:2017,gen:"9th Generation", type:"Hybrid",   img:"imgs/consolas/nintendo/switch.jpg"},
+  {brand:"Nintendo",name:"Nintendo Switch Lite",     year:2019,gen:"9th Generation", type:"Portable", img:"imgs/consolas/nintendo/switch-lite.jpg"},
+  {brand:"Nintendo",name:"Nintendo Switch OLED",     year:2021,gen:"9th Generation", type:"Hybrid",   img:"imgs/consolas/nintendo/switch-oled.jpg"},
+  {brand:"Nintendo",name:"Nintendo Switch 2",        year:2025,gen:"10th Generation",type:"Hybrid",   img:"imgs/consolas/nintendo/switch-2.jpg"},
+  {brand:"Nintendo",name:"Virtual Boy",              year:1995,gen:"5th Generation", type:"Portable", img:"imgs/consolas/nintendo/virtual-boy.jpg"},
+  {brand:"Nintendo",name:"NES Classic Edition",      year:2016,gen:"Retro Mini",     type:"Home",     img:"imgs/consolas/nintendo/nes-classic.jpg"},
+  {brand:"Nintendo",name:"SNES Classic Edition",     year:2017,gen:"Retro Mini",     type:"Home",     img:"imgs/consolas/nintendo/snes-classic.jpg"},
+  /* ── NINTENDO — PORTABLE ── */
+  {brand:"Nintendo",name:"Game & Watch",             year:1980,gen:"Portable",       type:"Portable", img:"imgs/consolas/nintendo/game-watch.jpg"},
+  {brand:"Nintendo",name:"Game Boy",                 year:1989,gen:"Portable",       type:"Portable", img:"imgs/consolas/nintendo/gameboy.jpg"},
+  {brand:"Nintendo",name:"Game Boy Pocket",          year:1996,gen:"Portable",       type:"Portable", img:"imgs/consolas/nintendo/gameboy-pocket.jpg"},
+  {brand:"Nintendo",name:"Game Boy Light",           year:1998,gen:"Portable",       type:"Portable", img:"imgs/consolas/nintendo/gameboy-light.jpg"},
+  {brand:"Nintendo",name:"Game Boy Color",           year:1998,gen:"Portable",       type:"Portable", img:"imgs/consolas/nintendo/gameboy-color.jpg"},
+  {brand:"Nintendo",name:"Game Boy Advance",         year:2001,gen:"Portable",       type:"Portable", img:"imgs/consolas/nintendo/gba.jpg"},
+  {brand:"Nintendo",name:"Game Boy Advance SP",      year:2003,gen:"Portable",       type:"Portable", img:"imgs/consolas/nintendo/gba-sp.jpg"},
+  {brand:"Nintendo",name:"Game Boy Micro",           year:2005,gen:"Portable",       type:"Portable", img:"imgs/consolas/nintendo/gameboy-micro.jpg"},
+  {brand:"Nintendo",name:"Nintendo DS",              year:2004,gen:"Portable",       type:"Portable", img:"imgs/consolas/nintendo/ds.jpg"},
+  {brand:"Nintendo",name:"Nintendo DS Lite",         year:2006,gen:"Portable",       type:"Portable", img:"imgs/consolas/nintendo/ds-lite.jpg"},
+  {brand:"Nintendo",name:"Nintendo DSi",             year:2008,gen:"Portable",       type:"Portable", img:"imgs/consolas/nintendo/dsi.jpg"},
+  {brand:"Nintendo",name:"Nintendo DSi XL",          year:2009,gen:"Portable",       type:"Portable", img:"imgs/consolas/nintendo/dsi-xl.jpg"},
+  {brand:"Nintendo",name:"Nintendo 3DS",             year:2011,gen:"Portable",       type:"Portable", img:"imgs/consolas/nintendo/3ds.jpg"},
+  {brand:"Nintendo",name:"Nintendo 3DS XL",          year:2012,gen:"Portable",       type:"Portable", img:"imgs/consolas/nintendo/3ds-xl.jpg"},
+  {brand:"Nintendo",name:"Nintendo 2DS",             year:2013,gen:"Portable",       type:"Portable", img:"imgs/consolas/nintendo/2ds.jpg"},
+  {brand:"Nintendo",name:"New Nintendo 3DS",         year:2014,gen:"Portable",       type:"Portable", img:"imgs/consolas/nintendo/new-3ds.jpg"},
+  {brand:"Nintendo",name:"New Nintendo 3DS XL",      year:2014,gen:"Portable",       type:"Portable", img:"imgs/consolas/nintendo/new-3ds-xl.jpg"},
+  {brand:"Nintendo",name:"New Nintendo 2DS XL",      year:2017,gen:"Portable",       type:"Portable", img:"imgs/consolas/nintendo/new-2ds-xl.jpg"},
+  {brand:"Nintendo",name:"Pokémon Mini",             year:2001,gen:"Portable",       type:"Portable", img:"imgs/consolas/nintendo/pokemon-mini.jpg"},
+  {brand:"Nintendo",name:"G&W: Super Mario Bros.",   year:2020,gen:"Portable",       type:"Portable", img:"imgs/consolas/nintendo/game-watch-mario.jpg"},
+  {brand:"Nintendo",name:"G&W: The Legend of Zelda", year:2021,gen:"Portable",       type:"Portable", img:"imgs/consolas/nintendo/game-watch-zelda.jpg"},
+
+  /* ── SONY — HOME ── */
+  {brand:"Sony",name:"PlayStation",                  year:1994,gen:"5th Generation", type:"Home",     img:"imgs/consolas/sony/ps1.jpg"},
+  {brand:"Sony",name:"PSone",                        year:2000,gen:"5th Generation", type:"Home",     img:"imgs/consolas/sony/psone.jpg"},
+  {brand:"Sony",name:"PlayStation 2",                year:2000,gen:"6th Generation", type:"Home",     img:"imgs/consolas/sony/ps2.jpg"},
+  {brand:"Sony",name:"PlayStation 2 Slim",           year:2004,gen:"6th Generation", type:"Home",     img:"imgs/consolas/sony/ps2-slim.jpg"},
+  {brand:"Sony",name:"PlayStation 3",                year:2006,gen:"7th Generation", type:"Home",     img:"imgs/consolas/sony/ps3.jpg"},
+  {brand:"Sony",name:"PlayStation 3 Slim",           year:2009,gen:"7th Generation", type:"Home",     img:"imgs/consolas/sony/ps3-slim.jpg"},
+  {brand:"Sony",name:"PlayStation 3 Super Slim",     year:2012,gen:"7th Generation", type:"Home",     img:"imgs/consolas/sony/ps3-super-slim.jpg"},
+  {brand:"Sony",name:"PlayStation 4",                year:2013,gen:"8th Generation", type:"Home",     img:"imgs/consolas/sony/ps4.jpg"},
+  {brand:"Sony",name:"PlayStation 4 Slim",           year:2016,gen:"8th Generation", type:"Home",     img:"imgs/consolas/sony/ps4-slim.jpg"},
+  {brand:"Sony",name:"PlayStation 4 Pro",            year:2016,gen:"8th Generation", type:"Home",     img:"imgs/consolas/sony/ps4-pro.jpg"},
+  {brand:"Sony",name:"PlayStation 5",                year:2020,gen:"9th Generation", type:"Home",     img:"imgs/consolas/sony/ps5.jpg"},
+  {brand:"Sony",name:"PlayStation 5 Digital Edition",year:2020,gen:"9th Generation", type:"Home",     img:"imgs/consolas/sony/ps5-digital.jpg"},
+  {brand:"Sony",name:"PlayStation 5 Slim",           year:2023,gen:"9th Generation", type:"Home",     img:"imgs/consolas/sony/ps5-slim.jpg"},
+  {brand:"Sony",name:"PlayStation 5 Pro",            year:2024,gen:"9th Generation", type:"Home",     img:"imgs/consolas/sony/ps5-pro.jpg"},
+  {brand:"Sony",name:"PlayStation Classic",          year:2018,gen:"Retro Mini",     type:"Home",     img:"imgs/consolas/sony/ps-classic.jpg"},
+  /* ── SONY — PORTABLE ── */
+  {brand:"Sony",name:"PlayStation Portable (PSP)",   year:2004,gen:"Portable",       type:"Portable", img:"imgs/consolas/sony/psp.jpg"},
+  {brand:"Sony",name:"PSP Slim & Lite (PSP-2000)",   year:2007,gen:"Portable",       type:"Portable", img:"imgs/consolas/sony/psp-2000.jpg"},
+  {brand:"Sony",name:"PSP Brite (PSP-3000)",         year:2008,gen:"Portable",       type:"Portable", img:"imgs/consolas/sony/psp-3000.jpg"},
+  {brand:"Sony",name:"PSP Go",                       year:2009,gen:"Portable",       type:"Portable", img:"imgs/consolas/sony/psp-go.jpg"},
+  {brand:"Sony",name:"PSP Street (E1000)",           year:2011,gen:"Portable",       type:"Portable", img:"imgs/consolas/sony/psp-street.jpg"},
+  {brand:"Sony",name:"PlayStation Vita",             year:2011,gen:"Portable",       type:"Portable", img:"imgs/consolas/sony/psvita.jpg"},
+  {brand:"Sony",name:"PlayStation Vita Slim",        year:2013,gen:"Portable",       type:"Portable", img:"imgs/consolas/sony/psvita-slim.jpg"},
+  {brand:"Sony",name:"PlayStation TV",               year:2013,gen:"Portable",       type:"Home",     img:"imgs/consolas/sony/pstv.jpg"},
+  {brand:"Sony",name:"PlayStation Portal",           year:2023,gen:"9th Generation", type:"Portable", img:"imgs/consolas/sony/ps-portal.jpg"},
+
+  /* ── MICROSOFT ── */
+  {brand:"Microsoft",name:"Xbox",                    year:2001,gen:"6th Generation", type:"Home",     img:"imgs/consolas/microsoft/xbox.jpg"},
+  {brand:"Microsoft",name:"Xbox 360",                year:2005,gen:"7th Generation", type:"Home",     img:"imgs/consolas/microsoft/xbox360.jpg"},
+  {brand:"Microsoft",name:"Xbox 360 S",              year:2010,gen:"7th Generation", type:"Home",     img:"imgs/consolas/microsoft/xbox360-s.jpg"},
+  {brand:"Microsoft",name:"Xbox 360 E",              year:2013,gen:"7th Generation", type:"Home",     img:"imgs/consolas/microsoft/xbox360-e.jpg"},
+  {brand:"Microsoft",name:"Xbox One",                year:2013,gen:"8th Generation", type:"Home",     img:"imgs/consolas/microsoft/xboxone.jpg"},
+  {brand:"Microsoft",name:"Xbox One S",              year:2016,gen:"8th Generation", type:"Home",     img:"imgs/consolas/microsoft/xboxone-s.jpg"},
+  {brand:"Microsoft",name:"Xbox One X",              year:2017,gen:"8th Generation", type:"Home",     img:"imgs/consolas/microsoft/xboxone-x.jpg"},
+  {brand:"Microsoft",name:"Xbox One S All-Digital",  year:2019,gen:"8th Generation", type:"Home",     img:"imgs/consolas/microsoft/xboxone-s-digital.jpg"},
+  {brand:"Microsoft",name:"Xbox Series S",           year:2020,gen:"9th Generation", type:"Home",     img:"imgs/consolas/microsoft/xbox-series-s.jpg"},
+  {brand:"Microsoft",name:"Xbox Series X",           year:2020,gen:"9th Generation", type:"Home",     img:"imgs/consolas/microsoft/xbox-series-x.jpg"},
+
+  /* ── SEGA ── */
+  {brand:"Sega",name:"SG-1000",                      year:1983,gen:"3rd Generation", type:"Home",     img:"imgs/consolas/sega/sg-1000.jpg"},
+  {brand:"Sega",name:"SC-3000",                      year:1983,gen:"3rd Generation", type:"Home",     img:"imgs/consolas/sega/sc-3000.jpg"},
+  {brand:"Sega",name:"Master System",                year:1985,gen:"3rd Generation", type:"Home",     img:"imgs/consolas/sega/master-system.jpg"},
+  {brand:"Sega",name:"Mega Drive / Genesis",         year:1988,gen:"4th Generation", type:"Home",     img:"imgs/consolas/sega/megadrive.jpg"},
+  {brand:"Sega",name:"Mega-CD",                      year:1991,gen:"4th Generation", type:"Addon",    img:"imgs/consolas/sega/mega-cd.jpg"},
+  {brand:"Sega",name:"Sega 32X",                     year:1994,gen:"4th Generation", type:"Addon",    img:"imgs/consolas/sega/32x.jpg"},
+  {brand:"Sega",name:"Sega Pico",                    year:1993,gen:"4th Generation", type:"Home",     img:"imgs/consolas/sega/pico.jpg"},
+  {brand:"Sega",name:"Sega Saturn",                  year:1994,gen:"5th Generation", type:"Home",     img:"imgs/consolas/sega/saturn.jpg"},
+  {brand:"Sega",name:"Sega Dreamcast",               year:1998,gen:"6th Generation", type:"Home",     img:"imgs/consolas/sega/dreamcast.jpg"},
+  {brand:"Sega",name:"Game Gear",                    year:1990,gen:"Portable",       type:"Portable", img:"imgs/consolas/sega/game-gear.jpg"},
+  {brand:"Sega",name:"Sega Nomad",                   year:1995,gen:"Portable",       type:"Portable", img:"imgs/consolas/sega/nomad.jpg"},
+  {brand:"Sega",name:"Mega Drive Mini",              year:2019,gen:"Retro Mini",     type:"Home",     img:"imgs/consolas/sega/megadrive-mini.jpg"},
+  {brand:"Sega",name:"Mega Drive Mini 2",            year:2022,gen:"Retro Mini",     type:"Home",     img:"imgs/consolas/sega/megadrive-mini2.jpg"},
+  {brand:"Sega",name:"Sega Genesis Mini",            year:2019,gen:"Retro Mini",     type:"Home",     img:"imgs/consolas/sega/genesis-mini.jpg"},
+
+  /* ── ATARI ── */
+  {brand:"Atari",name:"Atari 2600",                  year:1977,gen:"2nd Generation", type:"Home",     img:"imgs/consolas/atari/atari2600.jpg"},
+  {brand:"Atari",name:"Atari 5200",                  year:1982,gen:"2nd Generation", type:"Home",     img:"imgs/consolas/atari/atari5200.jpg"},
+  {brand:"Atari",name:"Atari 7800",                  year:1986,gen:"3rd Generation", type:"Home",     img:"imgs/consolas/atari/atari7800.jpg"},
+  {brand:"Atari",name:"Atari Jaguar",                year:1993,gen:"5th Generation", type:"Home",     img:"imgs/consolas/atari/jaguar.jpg"},
+  {brand:"Atari",name:"Atari Jaguar CD",             year:1995,gen:"5th Generation", type:"Addon",    img:"imgs/consolas/atari/jaguar-cd.jpg"},
+  {brand:"Atari",name:"Atari VCS (2021)",            year:2021,gen:"9th Generation", type:"Home",     img:"imgs/consolas/atari/atari-vcs.jpg"},
+  {brand:"Atari",name:"Atari Lynx",                  year:1989,gen:"Portable",       type:"Portable", img:"imgs/consolas/atari/lynx.jpg"},
+  {brand:"Atari",name:"Atari Lynx II",               year:1991,gen:"Portable",       type:"Portable", img:"imgs/consolas/atari/lynx2.jpg"},
+  {brand:"Atari",name:"Atari 2600+",                 year:2023,gen:"Retro Mini",     type:"Home",     img:"imgs/consolas/atari/atari2600-plus.jpg"},
+
+  /* ── NEC ── */
+  {brand:"NEC",name:"PC Engine / TurboGrafx-16",     year:1987,gen:"4th Generation", type:"Home",     img:"imgs/consolas/nec/pc-engine.jpg"},
+  {brand:"NEC",name:"PC Engine SuperGrafx",          year:1989,gen:"4th Generation", type:"Home",     img:"imgs/consolas/nec/supergrafx.jpg"},
+  {brand:"NEC",name:"PC Engine CD-ROM²",             year:1988,gen:"4th Generation", type:"Addon",    img:"imgs/consolas/nec/pc-engine-cd.jpg"},
+  {brand:"NEC",name:"TurboDuo",                      year:1992,gen:"4th Generation", type:"Home",     img:"imgs/consolas/nec/turboduo.jpg"},
+  {brand:"NEC",name:"PC-FX",                         year:1994,gen:"5th Generation", type:"Home",     img:"imgs/consolas/nec/pc-fx.jpg"},
+  {brand:"NEC",name:"PC Engine GT / TurboExpress",   year:1990,gen:"Portable",       type:"Portable", img:"imgs/consolas/nec/turboexpress.jpg"},
+  {brand:"NEC",name:"PC Engine Mini",                year:2019,gen:"Retro Mini",     type:"Home",     img:"imgs/consolas/nec/pc-engine-mini.jpg"},
+
+  /* ── SNK ── */
+  {brand:"SNK",name:"Neo Geo AES",                   year:1990,gen:"4th Generation", type:"Home",     img:"imgs/consolas/snk/neogeo-aes.jpg"},
+  {brand:"SNK",name:"Neo Geo CD",                    year:1994,gen:"4th Generation", type:"Home",     img:"imgs/consolas/snk/neogeo-cd.jpg"},
+  {brand:"SNK",name:"Neo Geo CDZ",                   year:1995,gen:"4th Generation", type:"Home",     img:"imgs/consolas/snk/neogeo-cdz.jpg"},
+  {brand:"SNK",name:"Neo Geo Pocket",                year:1998,gen:"Portable",       type:"Portable", img:"imgs/consolas/snk/neogeo-pocket.jpg"},
+  {brand:"SNK",name:"Neo Geo Pocket Color",          year:1999,gen:"Portable",       type:"Portable", img:"imgs/consolas/snk/neogeo-pocket-color.jpg"},
+  {brand:"SNK",name:"Neo Geo Mini",                  year:2018,gen:"Retro Mini",     type:"Home",     img:"imgs/consolas/snk/neogeo-mini.jpg"},
+  {brand:"SNK",name:"MVSX Home Arcade",              year:2020,gen:"Retro Mini",     type:"Home",     img:"imgs/consolas/snk/mvsx.jpg"},
+
+  /* ── 3DO ── */
+  {brand:"3DO",name:"3DO Interactive Multiplayer (Panasonic FZ-1)",year:1993,gen:"5th Generation",type:"Home",img:"imgs/consolas/3do/3do-panasonic.jpg"},
+  {brand:"3DO",name:"3DO Interactive Multiplayer (Goldstar)",      year:1994,gen:"5th Generation",type:"Home",img:"imgs/consolas/3do/3do-goldstar.jpg"},
+  {brand:"3DO",name:"3DO Interactive Multiplayer (Sanyo)",         year:1994,gen:"5th Generation",type:"Home",img:"imgs/consolas/3do/3do-sanyo.jpg"},
+  {brand:"3DO",name:"Panasonic M2",                                year:1997,gen:"5th Generation",type:"Home",img:"imgs/consolas/3do/m2.jpg"},
+
+  /* ── PHILIPS / MAGNAVOX ── */
+  {brand:"Philips/Magnavox",name:"Magnavox Odyssey",  year:1972,gen:"1st Generation",type:"Home",    img:"imgs/consolas/philips/odyssey.jpg"},
+  {brand:"Philips/Magnavox",name:"Magnavox Odyssey²", year:1978,gen:"2nd Generation",type:"Home",    img:"imgs/consolas/philips/odyssey2.jpg"},
+  {brand:"Philips/Magnavox",name:"Philips Videopac G7000",year:1978,gen:"2nd Generation",type:"Home",img:"imgs/consolas/philips/videopac.jpg"},
+  {brand:"Philips/Magnavox",name:"Philips CD-i",      year:1991,gen:"5th Generation",type:"Home",    img:"imgs/consolas/philips/cd-i.jpg"},
+
+  /* ── MATTEL ── */
+  {brand:"Mattel",name:"Mattel Intellivision",        year:1979,gen:"2nd Generation",type:"Home",     img:"imgs/consolas/mattel/intellivision.jpg"},
+  {brand:"Mattel",name:"Intellivision II",            year:1983,gen:"2nd Generation",type:"Home",     img:"imgs/consolas/mattel/intellivision2.jpg"},
+  {brand:"Mattel",name:"HyperScan",                  year:2006,gen:"7th Generation",type:"Home",     img:"imgs/consolas/mattel/hyperscan.jpg"},
+
+  /* ── BANDAI ── */
+  {brand:"Bandai",name:"WonderSwan",                  year:1999,gen:"Portable",      type:"Portable", img:"imgs/consolas/bandai/wonderswan.jpg"},
+  {brand:"Bandai",name:"WonderSwan Color",            year:2000,gen:"Portable",      type:"Portable", img:"imgs/consolas/bandai/wonderswan-color.jpg"},
+  {brand:"Bandai",name:"SwanCrystal",                 year:2002,gen:"Portable",      type:"Portable", img:"imgs/consolas/bandai/swancrystal.jpg"},
+  {brand:"Bandai",name:"Bandai Pippin (Atmark)",      year:1995,gen:"5th Generation",type:"Home",     img:"imgs/consolas/bandai/pippin.jpg"},
+
+  /* ── COLECO ── */
+  {brand:"Coleco",name:"ColecoVision",                year:1982,gen:"2nd Generation",type:"Home",     img:"imgs/consolas/coleco/colecovision.jpg"},
+
+  /* ── OTHERS ── */
+  {brand:"Others",name:"Fairchild Channel F",         year:1976,gen:"2nd Generation",type:"Home",     img:"imgs/consolas/outros/channel-f.jpg"},
+  {brand:"Others",name:"Bally Astrocade",             year:1977,gen:"2nd Generation",type:"Home",     img:"imgs/consolas/outros/astrocade.jpg"},
+  {brand:"Others",name:"Emerson Arcadia 2001",        year:1982,gen:"2nd Generation",type:"Home",     img:"imgs/consolas/outros/arcadia2001.jpg"},
+  {brand:"Others",name:"Vectrex",                     year:1982,gen:"2nd Generation",type:"Home",     img:"imgs/consolas/outros/vectrex.jpg"},
+  {brand:"Others",name:"Amstrad GX4000",              year:1990,gen:"4th Generation",type:"Home",     img:"imgs/consolas/outros/gx4000.jpg"},
+  {brand:"Others",name:"Commodore CDTV",              year:1991,gen:"4th Generation",type:"Home",     img:"imgs/consolas/outros/cdtv.jpg"},
+  {brand:"Others",name:"Amiga CD32",                  year:1993,gen:"5th Generation",type:"Home",     img:"imgs/consolas/outros/amiga-cd32.jpg"},
+  {brand:"Others",name:"Nokia N-Gage",                year:2003,gen:"Portable",      type:"Portable", img:"imgs/consolas/outros/ngage.jpg"},
+  {brand:"Others",name:"Nokia N-Gage QD",             year:2004,gen:"Portable",      type:"Portable", img:"imgs/consolas/outros/ngage-qd.jpg"},
+  {brand:"Others",name:"Tiger Game.com",              year:1997,gen:"Portable",      type:"Portable", img:"imgs/consolas/outros/game-com.jpg"},
+  {brand:"Others",name:"Gizmondo",                    year:2005,gen:"Portable",      type:"Portable", img:"imgs/consolas/outros/gizmondo.jpg"},
+  {brand:"Others",name:"Ouya",                        year:2013,gen:"8th Generation",type:"Home",     img:"imgs/consolas/outros/ouya.jpg"},
+  {brand:"Others",name:"Valve Steam Deck",            year:2022,gen:"9th Generation",type:"Portable", img:"imgs/consolas/outros/steam-deck.jpg"},
+  {brand:"Others",name:"Valve Steam Deck OLED",       year:2023,gen:"9th Generation",type:"Portable", img:"imgs/consolas/outros/steam-deck-oled.jpg"},
+  {brand:"Others",name:"ASUS ROG Ally",               year:2023,gen:"9th Generation",type:"Portable", img:"imgs/consolas/outros/rog-ally.jpg"},
+  {brand:"Others",name:"Logitech G Cloud",            year:2022,gen:"9th Generation",type:"Portable", img:"imgs/consolas/outros/logitech-gcloud.jpg"},
+  {brand:"Others",name:"Playdate",                    year:2022,gen:"Portable",      type:"Portable", img:"imgs/consolas/outros/playdate.jpg"},
+  {brand:"Others",name:"Analogue Pocket",             year:2021,gen:"Portable",      type:"Portable", img:"imgs/consolas/outros/analogue-pocket.jpg"},
+  {brand:"Others",name:"Evercade VS",                 year:2021,gen:"Retro Mini",    type:"Home",     img:"imgs/consolas/outros/evercade-vs.jpg"},
+  {brand:"Others",name:"Evercade EXP",                year:2022,gen:"Portable",      type:"Portable", img:"imgs/consolas/outros/evercade-exp.jpg"},
+  {brand:"Others",name:"Polymega",                    year:2020,gen:"Retro Mini",    type:"Home",     img:"imgs/consolas/outros/polymega.jpg"},
+];
+
+/* ── CONFIG ── */
+const brandColors = {
+  "Nintendo":        "#e60012",
+  "Sony":            "#0070d1",
+  "Microsoft":       "#107c10",
+  "Sega":            "#1565c0",
+  "Atari":           "#e87c1e",
+  "NEC":             "#9900cc",
+  "SNK":             "#cc8800",
+  "3DO":             "#007070",
+  "Philips/Magnavox":"#999900",
+  "Mattel":          "#cc2266",
+  "Bandai":          "#ff6600",
+  "Coleco":          "#336699",
+  "Others":          "#4a7a4a",
+};
+const typeColors = { "Home":"#39ff14", "Portable":"#ffaa00", "Hybrid":"#00e5ff", "Addon":"#777" };
+const brandOrder = Object.keys(brandColors);
+const genList = ["All","1st Generation","2nd Generation","3rd Generation","4th Generation",
+  "5th Generation","6th Generation","7th Generation","8th Generation","9th Generation",
+  "10th Generation","Portable","Retro Mini"];
+const typeList = ["All","Home","Portable","Hybrid","Addon"];
+
+let activeBrand = "All", activeGen = "All", activeType = "All", viewMode = "grid";
+const owned = new Set(JSON.parse(localStorage.getItem("consoles_owned") || "[]"));
+const key = d => d.brand + "|" + d.name + "|" + d.year;
+
+/* ── FILTER BUILDER ── */
+function buildFilter(elId, items, getColor, getLabel, getCur, setCur) {
+  const el = document.getElementById(elId);
+  items.forEach(item => {
+    const btn = document.createElement("button");
+    btn.className = "fbtn" + (getCur() === item ? " active" : "");
+    btn.textContent = getLabel(item);
+    const col = getColor(item);
+    if (getCur() === item && col) btn.style.cssText = `background:${col};color:#000;border-color:${col}`;
+    btn.addEventListener("click", () => {
+      el.querySelectorAll(".fbtn").forEach(b => { b.classList.remove("active"); b.style.cssText = ""; });
+      btn.classList.add("active");
+      if (col) btn.style.cssText = `background:${col};color:#000;border-color:${col}`;
+      setCur(item); render();
+    });
+    el.appendChild(btn);
+  });
+}
+
+buildFilter("fMarca", ["All", ...brandOrder],
+  b => brandColors[b] || null, b => b,
+  () => activeBrand, v => activeBrand = v);
+buildFilter("fGen", genList,
+  () => null, g => g,
+  () => activeGen, v => activeGen = v);
+buildFilter("fTipo", typeList,
+  t => typeColors[t] || null, t => t,
+  () => activeType, v => activeType = v);
+
+/* ── CARD FACTORY ── */
+function makeCard(data, delay) {
+  const bc = brandColors[data.brand] || "#4a7a4a";
+  const tc = typeColors[data.type]   || "#777";
+  const k  = key(data);
+  const isOwned = owned.has(k);
+
+  const card = document.createElement("div");
+  card.className = "card" + (isOwned ? " owned" : "");
+  card.style.animationDelay = delay + "s";
+  card.addEventListener("mouseenter", () => {
+    card.style.borderColor = bc + "55";
+    card.style.boxShadow = `0 12px 32px ${bc}1a, 0 2px 8px rgba(0,0,0,0.5)`;
+  });
+  card.addEventListener("mouseleave", () => { card.style.borderColor = ""; card.style.boxShadow = ""; });
+
+  // image
+  const imgArea = document.createElement("div");
+  imgArea.className = "cimg";
+  imgArea.style.background = `radial-gradient(ellipse at 50% 80%,${bc}16 0%,#050905 70%)`;
+  const img = document.createElement("img");
+  img.alt = data.name; img.loading = "lazy"; img.src = data.img;
+  const ph = document.createElement("div");
+  ph.className = "ph";
+  ph.innerHTML = `<div class="ph-ico" style="color:${bc}">▣</div><div class="ph-nm" style="color:${bc}">${data.name.toUpperCase()}</div>`;
+  img.onerror = () => { img.style.display = "none"; ph.style.display = "flex"; };
+
+  // type badge
+  const tbadge = document.createElement("div");
+  tbadge.className = "type-badge " + {"Home":"t-home","Portable":"t-portable","Hybrid":"t-hybrid","Addon":"t-addon"}[data.type];
+  tbadge.textContent = data.type;
+
+  // year badge
+  const ybadge = document.createElement("div");
+  ybadge.className = "year-badge";
+  ybadge.textContent = data.year;
+
+  // owned btn
+  const ob = document.createElement("div");
+  ob.className = "obtn" + (isOwned ? " owned" : "");
+  ob.textContent = "✓";
+  ob.addEventListener("click", e => {
+    e.stopPropagation();
+    if (owned.has(k)) { owned.delete(k); ob.classList.remove("owned"); card.classList.remove("owned"); }
+    else              { owned.add(k);    ob.classList.add("owned");    card.classList.add("owned"); }
+    localStorage.setItem("consoles_owned", JSON.stringify([...owned]));
+    updateStats();
+  });
+
+  imgArea.appendChild(ph); imgArea.appendChild(img);
+  imgArea.appendChild(tbadge); imgArea.appendChild(ybadge); imgArea.appendChild(ob);
+  card.appendChild(imgArea);
+
+  // body
+  const body = document.createElement("div");
+  body.className = "cbody";
+  body.innerHTML = `<div class="cgen">${data.gen}</div>
+    <div class="cname">${data.name}</div>
+    <div class="ctags"><span class="ctag" style="color:${bc};border-color:${bc}44">${data.brand}</span></div>`;
+  card.appendChild(body);
+  return card;
+}
+
+/* ── RENDER ── */
+function render() {
+  const q = document.getElementById("search").value.toLowerCase().trim();
+  const out = document.getElementById("output");
+  out.innerHTML = "";
+
+  const filtered = consolas.filter(c => {
+    if (activeBrand !== "All" && c.brand !== activeBrand) return false;
+    if (activeGen   !== "All" && c.gen   !== activeGen)   return false;
+    if (activeType  !== "All" && c.type  !== activeType)  return false;
+    if (q && !(c.name.toLowerCase().includes(q) || c.brand.toLowerCase().includes(q) ||
+               c.gen.toLowerCase().includes(q) || String(c.year).includes(q))) return false;
+    return true;
+  });
+
+  if (!filtered.length) {
+    const g = document.createElement("div"); g.className = "grid";
+    g.innerHTML = `<div class="empty"><div class="empty-ico">▣</div><p>No consoles match "${q || "current filters"}"</p></div>`;
+    out.appendChild(g);
+    document.getElementById("countPill").textContent = "Showing 0 systems";
+    updateStats(); return;
+  }
+
+  const byBrand = {};
+  brandOrder.forEach(b => byBrand[b] = []);
+  filtered.forEach(c => { if (!byBrand[c.brand]) byBrand[c.brand] = []; byBrand[c.brand].push(c); });
+
+  let idx = 0;
+  const shown = activeBrand === "All"
+    ? brandOrder.filter(b => byBrand[b] && byBrand[b].length)
+    : [activeBrand].filter(b => byBrand[b] && byBrand[b].length);
+
+  shown.forEach(brand => {
+    const items = byBrand[brand]; if (!items.length) return;
+    const bc = brandColors[brand] || "#4a7a4a";
+    const lbl = document.createElement("div"); lbl.className = "slabel";
+    lbl.innerHTML = `<div class="slabel-inner">
+      <div class="sdot" style="background:${bc};color:${bc}"></div>
+      <span class="stitle" style="color:${bc}">${brand}</span>
+      <span class="scnt">${items.length} system${items.length !== 1 ? "s" : ""}</span>
+    </div>`;
+    out.appendChild(lbl);
+    const grid = document.createElement("div");
+    grid.className = "grid" + (viewMode === "list" ? " lv" : "");
+    items.sort((a, b) => a.year - b.year).forEach(c => grid.appendChild(makeCard(c, Math.min(idx++ * 0.012, 0.4))));
+    out.appendChild(grid);
+  });
+
+  document.getElementById("countPill").textContent = `Showing ${filtered.length} system${filtered.length !== 1 ? "s" : ""}`;
+  updateStats();
+}
+
+function updateStats() {
+  const t = consolas.length, n = owned.size, pct = t > 0 ? Math.round(n / t * 100) : 0;
+  document.getElementById("statOwned").textContent  = n;
+  document.getElementById("statTotal").textContent  = t;
+  document.getElementById("statPct").textContent    = pct + "%";
+  document.getElementById("totalCount").textContent = t;
+  document.getElementById("ownedCount").textContent = `✓ ${n} owned`;
+}
+
+function setView(mode) {
+  viewMode = mode;
+  document.getElementById("btnGrid").classList.toggle("active", mode === "grid");
+  document.getElementById("btnList").classList.toggle("active", mode === "list");
+  render();
+}
+
+updateStats(); render();
+document.getElementById("search").addEventListener("input", render);
+</script>
+
+<footer style="position:relative;z-index:10;margin-top:60px;padding:24px;border-top:1px solid rgba(57,255,20,0.07);text-align:center;">
+  <p style="font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#2d4a2d;line-height:2;max-width:600px;margin:0 auto;">
+    Personal collection archive · Non-commercial use only<br>
+    All product names and trademarks are property of their respective manufacturers
+  </p>
+</footer>
+</body>
+</html>
