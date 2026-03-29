@@ -219,6 +219,13 @@ input::placeholder{color:var(--muted);}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:99px}
 ::-webkit-scrollbar-thumb:hover{background:var(--cyan)}
 
+
+.io-btn{background:rgba(2,8,16,.85);border:1px solid var(--border2);border-radius:3px;
+  color:var(--muted2);cursor:pointer;font-family:'Rajdhani',sans-serif;
+  font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  padding:0 14px;height:36px;display:flex;align-items:center;gap:5px;
+  transition:all .15s;white-space:nowrap;}
+.io-btn:hover{background:rgba(0,229,255,.08);color:var(--white);border-color:var(--cyan);}
 @media(max-width:600px){
   :root{--card-w:160px;--img-h:185px;}
   h1{font-size:2.2rem}
@@ -271,12 +278,24 @@ input::placeholder{color:var(--muted);}
       <div class="owned-pill" id="ownedCount">✓ 0 owned</div>
       <div class="count-pill" id="countPill">Showing 0 items</div>
     </div>
-    <div class="view-toggle">
-      <button class="view-btn active" id="gvBtn" onclick="setView('grid')">&#x229E;</button>
-      <button class="view-btn" id="lvBtn" onclick="setView('list')">&#x2630;</button>
+    <div style="display:flex;gap:6px;align-items:center">
+      <button class="io-btn" onclick="exportCollection()">&#x2913; Export</button>
+      <label class="io-btn">&#x2912; Import
+        <input type="file" id="importFile" accept=".json" style="display:none" onchange="importCollection(event)">
+      </label>
+      <div class="view-toggle" style="margin-left:4px">
+        <button class="view-btn active" id="gvBtn" onclick="setView('grid')">&#x229E;</button>
+        <button class="view-btn" id="lvBtn" onclick="setView('list')">&#x2630;</button>
+      </div>
     </div>
   </div>
 </div>
+
+<div id="toast" style="display:none;position:fixed;bottom:28px;left:50%;transform:translateX(-50%);
+  background:rgba(0,20,40,.92);border:1px solid rgba(0,229,255,.4);color:#00e5ff;
+  font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;
+  text-transform:uppercase;padding:10px 24px;border-radius:4px;z-index:999;
+  backdrop-filter:blur(12px);pointer-events:none;"></div>
 
 <div id="output"></div>
 
